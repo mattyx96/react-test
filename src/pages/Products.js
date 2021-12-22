@@ -15,7 +15,7 @@ import Login from "../components/Login";
 import TagFilters from "../components/TagFilters";
 import ProductForm from "../components/ProductForm";
 
-function ProductsPage() {
+function Products() {
     const scrollTrigger = 105;
     const mdBreakpoint = 768;
     const searchRef = createRef();
@@ -210,96 +210,97 @@ function ProductsPage() {
     }, []);
 
 
-    return (<div className="container mx-auto pb-20">
-        <Header
-            searchHook={scrollPosition > scrollTrigger}
-            onSearchPressed={handleSearchHeaderPressed}
-            rightItems={
-                <>
-                    {auth.isAuth &&
-                        <button onClick={handleAddProductModalOpen} className="whitespace-nowrap">
-                            Add product
-                        </button>
-                    }
-                    {auth.isAuth ?
-                        <p className="whitespace-nowrap">Hi &nbsp; {auth.user.name}!</p>
-                        :
-                        <button onClick={handleLoginModalOpen}>Login</button>}
-                    {auth.isAuth && <button onClick={handleOnLogout}>Logout</button>}
-                </>
-            }
-        />
-        <div className="mt-28 flex justify-center items-center grid grid-cols-1
+    return (
+        <div className="container mx-auto pb-20">
+            <Header
+                searchHook={scrollPosition > scrollTrigger}
+                onSearchPressed={handleSearchHeaderPressed}
+                rightItems={
+                    <>
+                        {auth.isAuth &&
+                            <button onClick={handleAddProductModalOpen} className="whitespace-nowrap">
+                                Add product
+                            </button>
+                        }
+                        {auth.isAuth ?
+                            <p className="whitespace-nowrap">Hi &nbsp; {auth.user.name}!</p>
+                            :
+                            <button onClick={handleLoginModalOpen}>Login</button>}
+                        {auth.isAuth && <button onClick={handleOnLogout}>Logout</button>}
+                    </>
+                }
+            />
+            <div className="mt-28 flex justify-center items-center grid grid-cols-1
                 d:grid-cols-5 gap-2 md:mx-16 mx-auto">
-            <h3 className="font-thin my-4 text-2xl text-center md:text-left">
-                Products
-            </h3>
-            {filterApplied &&
-                <button
-                    onClick={handleRemoveFilters}
-                    className="mx-auto h-10 p-4 bg-gray-300 rounded-full flex justify-between items-center"
-                >
-                    <CloseIcon/>
-                    &nbsp;
-                    <span>Filters applied</span>
-                </button>}
-            <div className="flex justify-center md:gap-2 md:col-start-3 md:col-span-3">
-                <Search
-                    className="max-w-screen-sm" ref={searchRef}
-                    value={search}
-                    onChange={(e) => {
-                        setSearch(e.target.value)
-                    }}
-                />
-                <FilterButton
-                    fabOnly={width < mdBreakpoint}
-                    fabMode={(scrollPosition > scrollTrigger) || (width < mdBreakpoint)}
-                    onClick={handleFiltersModalOpen}
-                />
+                <h3 className="font-thin my-4 text-2xl text-center md:text-left">
+                    Products
+                </h3>
+                {filterApplied &&
+                    <button
+                        onClick={handleRemoveFilters}
+                        className="mx-auto h-10 p-4 bg-gray-300 rounded-full flex justify-between items-center"
+                    >
+                        <CloseIcon/>
+                        &nbsp;
+                        <span>Filters applied</span>
+                    </button>}
+                <div className="flex justify-center md:gap-2 md:col-start-3 md:col-span-3">
+                    <Search
+                        className="max-w-screen-sm" ref={searchRef}
+                        value={search}
+                        onChange={(e) => {
+                            setSearch(e.target.value)
+                        }}
+                    />
+                    <FilterButton
+                        fabOnly={width < mdBreakpoint}
+                        fabMode={(scrollPosition > scrollTrigger) || (width < mdBreakpoint)}
+                        onClick={handleFiltersModalOpen}
+                    />
+                </div>
             </div>
-        </div>
-        <GridView className="mt-4 md:mt-10">
-            {(filterApplied ? filteredProducts : products).map((obj, index) => {
-                return (<ProductPreview
-                    key={index}
-                    onClick={() => handleProductPreviewOpen(obj, index)}
-                    product={obj}
-                />)
-            })}
-        </GridView>
+            <GridView className="mt-4 md:mt-10">
+                {(filterApplied ? filteredProducts : products).map((obj, index) => {
+                    return (<ProductPreview
+                        key={index}
+                        onClick={() => handleProductPreviewOpen(obj, index)}
+                        product={obj}
+                    />)
+                })}
+            </GridView>
 
-        {/*--------------modals---------------*/}
+            {/*--------------modals---------------*/}
 
-        <Modal open={openProductModal} onClose={handleProductPreviewClose}>
-            <Product
-                isAuth={auth.isAuth}
-                onEdit={handleEditProductModalOpen}
-                onClose={handleProductPreviewClose}
-                product={selectedProduct}
-            />
-        </Modal>
-        <Modal open={openLoginModal} onClose={handleLoginModalClose}>
-            <Login
-                onLogin={handleOnLoginSuccess}
-            />
-        </Modal>
-        <Modal open={openFiltersModal} onClose={handleFiltersModalClose}>
-            <TagFilters
-                options={filters}
-                selectedOptions={selectedFilters}
-                onFilter={(filters) => handleOnFilter(filters)}
-            />
-        </Modal>
-        <Modal open={openAddProductModal} onClose={handleProductModalClose}>
-            <ProductForm
-                onClose={handleProductModalClose}
-                isEdit={productModalIsEdit}
-                product={selectedProduct}
-                onAdd={addProduct}
-                onEdit={editProduct}
-            />
-        </Modal>
-    </div>);
+            <Modal open={openProductModal} onClose={handleProductPreviewClose}>
+                <Product
+                    isAuth={auth.isAuth}
+                    onEdit={handleEditProductModalOpen}
+                    onClose={handleProductPreviewClose}
+                    product={selectedProduct}
+                />
+            </Modal>
+            <Modal open={openLoginModal} onClose={handleLoginModalClose}>
+                <Login
+                    onLogin={handleOnLoginSuccess}
+                />
+            </Modal>
+            <Modal open={openFiltersModal} onClose={handleFiltersModalClose}>
+                <TagFilters
+                    options={filters}
+                    selectedOptions={selectedFilters}
+                    onFilter={(filters) => handleOnFilter(filters)}
+                />
+            </Modal>
+            <Modal open={openAddProductModal} onClose={handleProductModalClose}>
+                <ProductForm
+                    onClose={handleProductModalClose}
+                    isEdit={productModalIsEdit}
+                    product={selectedProduct}
+                    onAdd={addProduct}
+                    onEdit={editProduct}
+                />
+            </Modal>
+        </div>);
 }
 
-export default ProductsPage;
+export default Products;
