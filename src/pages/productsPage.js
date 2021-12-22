@@ -51,6 +51,7 @@ function ProductsPage() {
         setWidth(window.innerWidth);
     }
 
+    // on product click
     function handleProductPreviewOpen(product, index) {
         setSelectedProduct(product);
         setOpenProductModal(true);
@@ -99,6 +100,8 @@ function ProductsPage() {
     }
 
     function handleRemoveFilters() {
+        setSearch("");
+        setSelectedFilters([]);
         setFilterApplied(false);
         setFilteredProducts([]);
     }
@@ -109,7 +112,8 @@ function ProductsPage() {
 
         //no filters check
         if (selectedFilters.length === 0 && search === "") {
-            handleRemoveFilters();
+            setFilterApplied(false);
+            setFilteredProducts([]);
             return;
         }
 
@@ -128,8 +132,9 @@ function ProductsPage() {
 
         //search
         if (search !== "") {
+            let lowerCaseSearch = search.toLowerCase();
             for (let i = 0; i < products.length; i++) {
-                if (products[i].name.includes(search)) {
+                if (products[i].name.toLowerCase().includes(lowerCaseSearch)) {
                     searched.push(products[i]);
                 }
             }
@@ -179,6 +184,7 @@ function ProductsPage() {
         })
     }
 
+    //filter when search or selected filters change
     useEffect(() => {
         filterAndSearch();
     }, [search, selectedFilters])
@@ -192,7 +198,7 @@ function ProductsPage() {
         setFilters([...new Set(_filters)])
     }, [products])
 
-    //add scroll & resize listners
+    //add scroll & resize listeners
     useEffect(() => {
         window.addEventListener('scroll', handleScroll, {passive: true});
         window.addEventListener('resize', handleWindowSizeChange);
@@ -261,6 +267,9 @@ function ProductsPage() {
                 />)
             })}
         </GridView>
+
+        {/*--------------modals---------------*/}
+
         <Modal open={openProductModal} onClose={handleProductPreviewClose}>
             <Product
                 isAuth={auth.isAuth}
