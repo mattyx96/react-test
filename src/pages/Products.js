@@ -35,6 +35,8 @@ function Products() {
     const [openFiltersModal, setOpenFiltersModal] = useState(false);
     const [openAddProductModal, setOpenAddProductModal] = useState(false);
 
+
+
     const {auth, saveAuth} = useAuth();
 
     const handleScroll = () => {
@@ -196,7 +198,7 @@ function Products() {
             _filters = _filters.concat(products[i].tags);
         }
         setFilters([...new Set(_filters)])
-    }, [products])
+    }, [])
 
     //add scroll & resize listeners
     useEffect(() => {
