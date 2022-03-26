@@ -7,6 +7,7 @@ function App() {
         <>
             <Routes>
                 <Route path="/" element={<Products />} />
+
                 {/*<Route path="login" element={<Login />} />*/}
             </Routes>
         </>
